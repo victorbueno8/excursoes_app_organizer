@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:excursoes_app_organizer/model/excursion.dart';
 import 'package:excursoes_app_organizer/util/dbhelper.dart';
+import 'package:excursoes_app_organizer/screens/excursionDetail.dart';
 
 class ExcursionList extends StatefulWidget {
   @override
@@ -41,8 +42,10 @@ class ExcursionListState extends State<ExcursionList> {
     return Scaffold(
       body: excursionListItems(),
       floatingActionButton: FloatingActionButton(
-        onPressed: null,
-        tooltip: "Add new Todo",
+        onPressed: () {
+          navigateToDetail(Excursion("","",DateTime.now().toString()));
+        },
+        tooltip: "Adicionar nova excursão",
         child: new Icon(Icons.add),
       ),
     );
@@ -58,13 +61,11 @@ class ExcursionListState extends State<ExcursionList> {
           child: ListTile(
             leading: CircleAvatar(
               backgroundColor: getColor(this.excursions[position].date),
-              child: Text(this.excursions[position].date.toString()),
             ),
             title: Text(this.excursions[position].title),
-            subtitle: Text(this.excursions[position].date),
+            subtitle: Text(this.excursions[position].local + " - " + this.excursions[position].date),
             onTap: () {
-              debugPrint(
-                  "Tapped on " + this.excursions[position].id.toString());
+              navigateToDetail(this.excursions[position]);
             },
           ),
         );
@@ -77,6 +78,16 @@ class ExcursionListState extends State<ExcursionList> {
       return Colors.red;
     } else {
       return Colors.green;
+    }
+  }
+
+  void navigateToDetail(Excursion excursion) async {
+    bool result = await Navigator.push(context,
+      MaterialPageRoute(builder: (context) => ExcursionDetail(excursion)),
+    );
+
+    if(result == true) {
+      getData();
     }
   }
 }

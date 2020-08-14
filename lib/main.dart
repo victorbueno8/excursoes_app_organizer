@@ -29,7 +29,7 @@ class HomeState extends State<Home> {
   Widget build(BuildContext formContext) {
     return Scaffold(
         appBar: AppBar(
-        title: Text("Minhas Excursões"),
+          title: Text("Minhas Excursões"),
       ),
       body: ExcursionList()
     );
